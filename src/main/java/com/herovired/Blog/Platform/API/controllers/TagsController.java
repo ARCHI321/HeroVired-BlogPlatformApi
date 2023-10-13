@@ -17,8 +17,7 @@ import com.herovired.Blog.Platform.API.models.Tags;
 @RequestMapping("/tags")
 public class TagsController
 {
-//    @Autowired
-//    private Tags tags;
+
     @Autowired
     private TagRepository tagRepository;
 

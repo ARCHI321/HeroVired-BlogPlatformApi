@@ -79,6 +79,10 @@ public class BlogPostController {
         }
 
         if(flag1 == 1 && flag2 == 1){
+            var blogUser = userRepository.findById((long) userId);
+            if(blogUser.get().isBlocked()){
+                return new ResponseEntity("User is blocked ny admin", HttpStatus.ACCEPTED);
+            }
             blogPost.getUserData().setUserId(userId);
             if(postNow.equals("Yes") || postNow.equals("yes")) {
                     var saveBlog = blogPostRepository.save(blogPost);
@@ -197,8 +201,8 @@ public class BlogPostController {
         if(post.isPresent()) {
             var user = post.get().getUserData().getUserName();
             var postId = post.get().getPostId();
-            System.out.println(user);
-            System.out.println(username);
+//            System.out.println(user);
+//            System.out.println(username);
             if (user.equals(username)) {
                 blogPostRepository.deleteById(postId);
                 return new ResponseEntity("Post deleted sucessfully", HttpStatus.ACCEPTED);

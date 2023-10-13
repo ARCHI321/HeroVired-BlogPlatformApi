@@ -3,6 +3,8 @@ package com.herovired.Blog.Platform.API.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.Set;
+
 
 @Entity
 public class User {
@@ -11,7 +13,7 @@ public class User {
     @Column(name="user_id" , unique = true)
     private long userId;
 
-    @Column(name="admin_id")
+    @Column(name="is_admin")
     @NotNull
     private boolean isAdmin;
 
@@ -23,9 +25,15 @@ public class User {
 
     @Column(name = "user_password",updatable = true , unique = false)
     @NotBlank
-    @Size(min=5 , max = 30 , message = "Length should be in between 5 to 30")
+    @Size(min=5 , max = 300 , message = "Length should be in between 5 to 30")
     private String userPassword;
 
+    @Column(name = "is_blocked" , updatable = true)
+    private boolean isBlocked = false;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Authority> authorities;
 
     public long getUserId() {
         return userId;
@@ -59,6 +67,22 @@ public class User {
         this.userPassword = userPassword;
     }
 
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -66,6 +90,8 @@ public class User {
                 ", isAdmin=" + isAdmin +
                 ", userName='" + userName + '\'' +
                 ", userPassword='" + userPassword + '\'' +
+                ", isBlocked=" + isBlocked +
+                ", authorities=" + authorities +
                 '}';
     }
 }
